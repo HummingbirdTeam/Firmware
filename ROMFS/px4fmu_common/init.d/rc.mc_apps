@@ -4,15 +4,30 @@
 # att & pos estimator, att & pos control.
 #
 
-# previously (2014) the system was relying on
-# INAV, which defaults to 0 now. 
-if param compare INAV_ENABLED 1
+
+#---------------------------------------
+# Estimator group selction
+#
+# INAV
+if param compare SYS_MC_EST_GROUP 0
 then
-	attitude_estimator_ekf start
+	attitude_estimator_q start
 	position_estimator_inav start
-else
-	ekf_att_pos_estimator start
 fi
+
+# LPE
+if param compare SYS_MC_EST_GROUP 1
+then
+	attitude_estimator_q start
+	local_position_estimator start
+fi
+
+# EKF
+if param compare SYS_MC_EST_GROUP 2
+then
+	ekf2 start
+fi
+#---------------------------------------
 
 if mc_att_control start
 then
